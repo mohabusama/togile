@@ -1,0 +1,11 @@
+{
+    "name": "togile",
+    "version": "0.0.1",
+    "engines": {
+        "node": "==0.10.22"
+    },
+    "dependencies": {
+        "yo": "==1.0",
+        "generator-angular": ""
+    }
+}
