@@ -1,0 +1,74 @@
+[
+    {
+        "fields": {
+            "title": "List 1",
+            "user": 1,
+            "created": "2013-12-07T00:07:06.50542+0000",
+            "updated": "2013-12-07T00:07:06.50542+0000"
+        },
+        "model": "todo.TodoList",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "title": "List 1_1",
+            "user": 1,
+            "created": "2013-12-07T00:07:06.50542+0000",
+            "updated": "2013-12-07T00:07:06.50542+0000"
+        },
+        "model": "todo.TodoList",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "title": "List 2",
+            "user": 2,
+            "created": "2013-12-07T00:07:06.50542+0000",
+            "updated": "2013-12-07T00:07:06.50542+0000"
+        },
+        "model": "todo.TodoList",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "title": "List 2_2",
+            "user": 2,
+            "parent": 3,
+            "created": "2013-12-07T00:07:06.50542+0000",
+            "updated": "2013-12-07T00:07:06.50542+0000"
+        },
+        "model": "todo.TodoList",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "value": "Item 1 1",
+            "todo_list": 1,
+            "created": "2013-12-07T00:07:06.50542+0000",
+            "updated": "2013-12-07T00:07:06.50542+0000"
+        },
+        "model": "todo.TodoItem",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "value": "Item 1 2",
+            "todo_list": 1,
+            "status": 1,
+            "created": "2013-12-07T00:07:06.50542+0000",
+            "updated": "2013-12-07T00:07:06.50542+0000"
+        },
+        "model": "todo.TodoItem",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "value": "Item 2 1",
+            "todo_list": 3,
+            "created": "2013-12-07T00:07:06.50542+0000",
+            "updated": "2013-12-07T00:07:06.50542+0000"
+        },
+        "model": "todo.TodoItem",
+        "pk": 3
+    }
+]
