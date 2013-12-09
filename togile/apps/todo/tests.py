@@ -64,19 +64,23 @@ class TodoListResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(response)
 
     def test_get_list(self):
-        # User: 'user 1'
+        """
+        User: 'user 1'
+        """
         self._login()
 
         response = self.api_client.get(self.list_url)
         self.assertHttpOK(response)
         self.assertValidJSONResponse(response)
 
-        # todo_list = self.deserialize(response)
-        # self.assertEqual(len(todo_list['objects']), 2)
+        todo_list = self.deserialize(response)
+        self.assertEqual(len(todo_list['objects']), 2)
 
     def test_get_detail(self):
-        # User: 'user 1'
-        # List: 1
+        """
+        User: 'user 1'
+        List: 1
+        """
         self._login()
 
         response = self.api_client.get(self.detail_url)
@@ -84,7 +88,134 @@ class TodoListResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(response)
 
         todo_list = self.deserialize(response)
-        self.assertEqual(todo_list['id'], 1)
+        self.assertEqual(todo_list['resource_uri'], self.detail_url)
+
+    ###########################################################################
+    # POST
+    ###########################################################################
+    def test_post_list_unauthorized(self):
+        response = self.api_client.post(self.list_url)
+        self.assertHttpUnauthorized(response)
+
+    def test_post_list_other_user_unauthorized(self):
+        self._login(username='user_2', password='user_2')
+
+        data = {
+            'title': 'New Todo List'
+        }
+
+        response = self.api_client.post(self.list_url, data=data)
+        self.assertHttpUnauthorized(response)
+
+    def test_post_list(self):
+        """
+        User: 'user 1'
+        """
+        self._login()
+
+        data = {
+            'title': 'New Todo List'
+        }
+
+        response = self.api_client.post(self.list_url, data=data)
+        self.assertHttpCreated(response)
+
+        todo_list = self.deserialize(response)
+        self.assertEqual(todo_list['title'], data['title'])
+        self.assertEqual(todo_list['parent_id'], None)
+
+        self.assertIn('resource_uri', todo_list)
+
+        # Now get the list using the reource_uri
+        response = self.api_client.get(todo_list['resource_uri'])
+        self.assertHttpOK(response)
+
+    def test_post_list_with_parent(self):
+        """
+        User: 'user 1'
+        """
+        self._login()
+
+        data = {
+            'title': 'New Todo List',
+            'parent_id': 1
+        }
+
+        response = self.api_client.post(self.list_url, data=data)
+        self.assertHttpCreated(response)
+
+        todo_list = self.deserialize(response)
+        self.assertEqual(todo_list['title'], data['title'])
+        self.assertEqual(todo_list['parent_id'], data['parent_id'])
+
+        self.assertIn('resource_uri', todo_list)
+
+        # Now get the list using the reource_uri
+        response = self.api_client.get(todo_list['resource_uri'])
+        self.assertHttpOK(response)
+
+    ###########################################################################
+    # PUT
+    ###########################################################################
+    def test_put_detail_unauthorized(self):
+        response = self.api_client.put(self.detail_url)
+        self.assertHttpUnauthorized(response)
+
+    def test_put_detail_other_user_unauthorized(self):
+        self._login(username='user_2', password='user_2')
+
+        data = {
+            'title': 'Invalid'
+        }
+
+        response = self.api_client.put(self.detail_url, data=data)
+        self.assertHttpUnauthorized(response)
+
+    def test_put_detail(self):
+        """
+        User: 'user 1'
+        """
+        self._login()
+
+        data = {
+            'title': 'Updated Title'
+        }
+
+        response = self.api_client.put(self.detail_url, data=data)
+        self.assertHttpOK(response)
+
+        todo_list = self.deserialize(response)
+        self.assertEqual(todo_list['title'], data['title'])
+
+        self.assertIn('resource_uri', todo_list)
+
+        # Now get the list using the reource_uri
+        response = self.api_client.get(todo_list['resource_uri'])
+        self.assertHttpOK(response)
+        todo_list = self.deserialize(response)
+        self.assertEqual(todo_list['title'], data['title'])
+
+    ###########################################################################
+    # DELETE
+    ###########################################################################
+    def test_delete_detail_unauthorized(self):
+        response = self.api_client.delete(self.detail_url)
+        self.assertHttpUnauthorized(response)
+
+    def test_delete_detail_other_user_unauthorized(self):
+        self._login(username='user_2', password='user_2')
+
+        response = self.api_client.delete(self.detail_url)
+        self.assertHttpUnauthorized(response)
+
+    def test_delete_detail(self):
+        """
+        User: 'user 1'
+        """
+        self._login()
+
+        response = self.api_client.delete(self.detail_url)
+        self.assertEqual(response.status_code, 204)
 
 
 class TodoItemResourceTest(ResourceTestCase):

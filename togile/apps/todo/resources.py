@@ -34,6 +34,7 @@ class TodoItemValidation(Validation):
 class TodoListResource(CommonModelResource):
 
     user_id = fields.IntegerField(attribute='user_id')
+    parent_id = fields.IntegerField(attribute='parent_id', null=True)
 
     class Meta(CommonMeta):
         queryset = TodoList.objects.select_related('user').all()
