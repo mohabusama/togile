@@ -78,9 +78,19 @@ USE_L10N = True
 
 USE_TZ = True
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+# Since we are building a Client-side App (using AngularJs), then we will serve
+# Static content on the Root
+# e.g. Togile App accessible via: http://<FQDN>/index.html
+STATIC_URL = '/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'frontend', 'app'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
