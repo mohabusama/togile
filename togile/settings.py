@@ -80,11 +80,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-# Since we are building a Client-side App (using AngularJs), then we will serve
-# Static content on the Root
-# e.g. Togile App accessible via: http://<FQDN>/index.html
-STATIC_URL = '/'
+STATIC_URL = '/app/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend', 'app'),

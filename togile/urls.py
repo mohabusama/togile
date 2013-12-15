@@ -7,8 +7,6 @@ from togile.api import togile_api
 
 admin.autodiscover()
 
-print staticfiles_urlpatterns
-
 urlpatterns = patterns(
     '',
     url(r'^manage/', include(admin.site.urls)),
@@ -16,3 +14,5 @@ urlpatterns = patterns(
 )
 
 urlpatterns += staticfiles_urlpatterns()
+
+print urlpatterns

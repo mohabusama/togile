@@ -1,0 +1,28 @@
+<div class="container" ng-controller="ListsCtrl">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="New Todo List Name">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Add</button>
+              </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="lists-container" class="row">
+        <ul>
+            <li ng-repeat="list in lists">
+                <div class="well">
+                    <h4>{{list.title}}</h4>
+                    <ul>
+                        <li ng-repeat="todo in list._todos">
+                            <h5>{{todo.value}}</h5>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
