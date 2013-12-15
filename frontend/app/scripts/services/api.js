@@ -24,7 +24,6 @@ togileApp.factory('api', function($rootScope, Restangular) {
     }
 
     function listsGet(list, callback, errCallback) {
-        // var _api = _getListsApi(id);
         list.get()
             .then(callback, errCallback);
     }
@@ -36,13 +35,11 @@ togileApp.factory('api', function($rootScope, Restangular) {
     }
 
     function listsUpdate(list, data, callback, errCallback) {
-        // var _api = _getListsApi(id);
         list.put(data)
             .then(callback, errCallback);
     }
 
     function listsRemove(list, callback, errCallback) {
-        // var _api = _getListsApi(id);
         list.remove()
             .then(callback, errCallback);
     }

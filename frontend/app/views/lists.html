@@ -1,24 +1,51 @@
-<div class="container" ng-controller="ListsCtrl">
+<div ng-controller="ListsCtrl" class="main">
 
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="New Todo List Name">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Add</button>
-              </span>
-            </div>
+    <header class="navbar navbar-default navbar-fixed-top" role="banner">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">togile</a>
         </div>
-    </div>
+        <div class="container">
+            <div class="col-md-4 col-sm-4 col-xs-6 col-md-offset-4 col-sm-offset-4 col-xs-offset-1">
+                <div class="input-group navbar-form">
+                    <input type="text" class="form-control" placeholder="New Todo List Name">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" title="Add new list">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <button class="btn btn-default pull-right navbar-btn" type="button" title="Click to start searching!">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
+    </header>
 
-    <div id="lists-container" class="row">
+    <div class="row lists">
         <ul>
-            <li ng-repeat="list in lists">
+            <li ng-repeat="list in lists" class="col-xs-12 col-sm-4 col-md-3">
                 <div class="well">
-                    <h4>{{list.title}}</h4>
-                    <ul>
-                        <li ng-repeat="todo in list._todos">
-                            <h5>{{todo.value}}</h5>
+                    <center>
+                        <h4>{{list.title}}</h4>
+                    </center>
+                    <ul class="list-group">
+                        <li ng-repeat="todo in list._todos" class="list-group-item">
+                            <h5>
+                                <span class="glyphicon glyphicon-check actions"></span>
+                                {{todo.value}}
+                                <span class="glyphicon glyphicon-trash pull-right"></span>
+                                <span class="glyphicon glyphicon-pencil pull-right actions"></span>
+                            </h5>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="New Todo Item">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" title="Add new list">
+                                        <span class="glyphicon glyphicon-plus-sign"></span>
+                                    </button>
+                                </span>
+                            </div>
                         </li>
                     </ul>
                 </div>
