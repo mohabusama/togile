@@ -29,7 +29,7 @@ class CommonModelResource(ModelResource):
 
 
 class CommonMeta(object):
-    # excludes = ['id']
+    excludes = ['id']
     authentication = SessionAuthentication()
     authorization = CommonAuthorization()
     serializer = Serializer(formats=['json'])

@@ -23,25 +23,41 @@
 
     <div class="row lists">
         <ul>
-            <li ng-repeat="list in lists" class="col-xs-12 col-sm-4 col-md-3">
-                <div class="well">
+            <li 
+            ng-repeat="list in lists" ng-init="listIdx = $index" 
+            class="col-xs-12 col-sm-4 col-md-3"
+            >
+                <div class="well transparent">
                     <center>
                         <h4>{{list.title}}</h4>
                     </center>
                     <ul class="list-group">
-                        <li ng-repeat="todo in list._todos" class="list-group-item">
-                            <h5>
-                                <span class="glyphicon glyphicon-check actions"></span>
+                        <li 
+                        ng-repeat="todo in list._todos" ng-init="todoIdx = $index" 
+                        class="list-group-item transparent"
+                        >
+                            <h5 ng-model="todo.value">
+                                <span 
+                                ng-show="todo.status"
+                                class="glyphicon glyphicon-check actions"></span>
+                                <span
+                                ng-show="!todo.status"
+                                class="glyphicon glyphicon-unchecked actions"></span>
                                 {{todo.value}}
-                                <span class="glyphicon glyphicon-trash pull-right"></span>
+                                <span ng-click="deleteTodo(todo, todoIdx, listIdx)" class="glyphicon glyphicon-trash pull-right actions"></span>
                                 <span class="glyphicon glyphicon-pencil pull-right actions"></span>
                             </h5>
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item transparent">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="New Todo Item">
+                                <input 
+                                type="text" class="form-control" placeholder="New Todo Item"
+                                ng-model="list._newTodo.value"
+                                >
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" title="Add new list">
+                                    <button
+                                    ng-click="createTodo(list, listIdx)"
+                                    class="btn btn-default" type="button" title="Add new list">
                                         <span class="glyphicon glyphicon-plus-sign"></span>
                                     </button>
                                 </span>

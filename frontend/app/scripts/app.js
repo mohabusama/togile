@@ -25,6 +25,8 @@ togileApp.run(function($rootScope, Restangular, $cookieStore, $cookies) {
 
     Restangular.setBaseUrl('/api/v1');
 
+    Restangular.setRequestSuffix('/');
+
     Restangular.setResponseExtractor(function(response, operation) {
         var apiResponse = response;
         if (operation === 'getList') {

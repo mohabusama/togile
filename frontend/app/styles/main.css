@@ -2,6 +2,7 @@
 body {
   padding-top: 20px;
   padding-bottom: 20px;
+  background-image: url('../images/back.png');
 }
 
 ul, ol {
@@ -20,4 +21,8 @@ ul, ol {
 .actions {
   margin-right: 5px;
   cursor: pointer;
+}
+
+.transparent {
+  background-color: rgba(245, 245, 245, 0.4) !important;
 }

@@ -9,10 +9,10 @@ togileApp.factory('api', function($rootScope, Restangular) {
         return (id) ? api.one('lists', id) : api.all('lists');
     }
 
-    function _getTodosApi(list, id) {
-        var uri = list.resource_uri.replace(/\/$/, '');
-        return (id) ?
-            api.oneUrl('lists', uri).one('todos', id) :
+    function _getTodosApi(list, todo) {
+        var uri = (list) ? list.resource_uri.replace(/\/$/, '') : '';
+        return (todo) ?
+            api.oneUrl('todos', todo.resource_uri) :
             api.oneUrl('lists', uri).all('todos');
     }
 
@@ -51,8 +51,8 @@ togileApp.factory('api', function($rootScope, Restangular) {
             .then(callback, errCallback);
     }
 
-    function todosGet(list, id, callback, errCallback) {
-        var _api = _getTodosApi(list, id);
+    function todosGet(todo, callback, errCallback) {
+        var _api = _getTodosApi(null, todo);
         _api.get()
             .then(callback, errCallback);
     }
@@ -63,14 +63,14 @@ togileApp.factory('api', function($rootScope, Restangular) {
             .then(callback, errCallback);
     }
 
-    function todosUpdate(list, id, data, callback, errCallback) {
-        var _api = _getTodosApi(list, id);
+    function todosUpdate(todo, data, callback, errCallback) {
+        var _api = _getTodosApi(null, todo);
         _api.put(data)
             .then(callback, errCallback);
     }
 
-    function todosRemove(list, id, callback, errCallback) {
-        var _api = _getTodosApi(list, id);
+    function todosRemove(todo, callback, errCallback) {
+        var _api = _getTodosApi(null, todo);
         _api.remove()
             .then(callback, errCallback);
     }
