@@ -31,14 +31,14 @@ togileApp.run(function($rootScope, Restangular, $cookieStore, $cookies) {
         var apiResponse = response;
         if (operation === 'getList') {
             // Received response: { objects:[...], meta:{...} }
-            // apiResponse = response.objects;
-            // apiResponse._meta = response.meta
+            apiResponse = response.objects;
+            apiResponse._meta = response.meta
         }
         return apiResponse;
     });
 
     Restangular.setRestangularFields({
-        selfLink: 'self.resource_uri'
+        selfLink: 'resource_uri'
     });
 
     //CSRF TOKEN!

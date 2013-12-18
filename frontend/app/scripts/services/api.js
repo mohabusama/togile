@@ -34,8 +34,8 @@ togileApp.factory('api', function($rootScope, Restangular) {
             .then(callback, errCallback);
     }
 
-    function listsUpdate(list, data, callback, errCallback) {
-        list.put(data)
+    function listsUpdate(list, callback, errCallback) {
+        list.put()
             .then(callback, errCallback);
     }
 
@@ -52,8 +52,7 @@ togileApp.factory('api', function($rootScope, Restangular) {
     }
 
     function todosGet(todo, callback, errCallback) {
-        var _api = _getTodosApi(null, todo);
-        _api.get()
+        todo.get()
             .then(callback, errCallback);
     }
 
@@ -63,15 +62,13 @@ togileApp.factory('api', function($rootScope, Restangular) {
             .then(callback, errCallback);
     }
 
-    function todosUpdate(todo, data, callback, errCallback) {
-        var _api = _getTodosApi(null, todo);
-        _api.put(data)
+    function todosUpdate(todo, callback, errCallback) {
+        todo.put()
             .then(callback, errCallback);
     }
 
     function todosRemove(todo, callback, errCallback) {
-        var _api = _getTodosApi(null, todo);
-        _api.remove()
+        todo.remove()
             .then(callback, errCallback);
     }
 

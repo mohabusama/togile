@@ -27,7 +27,7 @@
             ng-repeat="list in lists" ng-init="listIdx = $index" 
             class="col-xs-12 col-sm-4 col-md-3"
             >
-                <div class="well transparent">
+                <div class="well transparent-dark todo-list">
                     <center>
                         <h4>{{list.title}}</h4>
                     </center>
@@ -37,18 +37,20 @@
                         class="list-group-item transparent"
                         >
                             <h5 ng-model="todo.value">
-                                <span 
+                                <span
                                 ng-show="todo.status"
+                                ng-click="updateTodoStatus(false);"
                                 class="glyphicon glyphicon-check actions"></span>
                                 <span
                                 ng-show="!todo.status"
+                                ng-click="updateTodoStatus(true);"
                                 class="glyphicon glyphicon-unchecked actions"></span>
                                 {{todo.value}}
                                 <span ng-click="deleteTodo(todo, todoIdx, listIdx)" class="glyphicon glyphicon-trash pull-right actions"></span>
                                 <span class="glyphicon glyphicon-pencil pull-right actions"></span>
                             </h5>
                         </li>
-                        <li class="list-group-item transparent">
+                        <li class="list-group-item transparent new-todo">
                             <div class="input-group">
                                 <input 
                                 type="text" class="form-control" placeholder="New Todo Item"
