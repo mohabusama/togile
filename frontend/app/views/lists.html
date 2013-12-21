@@ -38,14 +38,15 @@
                             &times;
                         </button>
                         <h4>
-                            <span ng-show="!list._edit">
+                            <span
+                            ng-show="!list._edit" ng-Dblclick="list._edit=true;" title="Double Click to Edit">
                                 {{list.title}}
                             </span>
                             
                             <!-- LIST Editing! -->
                             <div class="input-group" ng-show="list._edit">
-                                <input ng-model="list._title" ng-init="list._title=list.title"
-                                key-enter="list.title=list._title;updateList();"
+                                <input ng-model="list._title" ng-init="list._title=list.title" set-focus="list._edit"
+                                key-enter="list.title=list._title;updateList();" key-esc="list._edit=false"
                                 type="text" class="form-control" placeholder="Edit List">
                                 <span class="input-group-btn">
                                     <button
@@ -66,27 +67,33 @@
                         <li 
                         ng-repeat="todo in list._todos" ng-init="todoIdx = $index" ng-Dblclick="todo._edit=true;"
                         ng-mouseover="todo._hover=true" ng-mouseleave="todo._hover=false"
-                        class="list-group-item transparent">
-                            <button ng-show="todo._edit" ng-click="todo._edit=false;"
-                            type="button" class="close pull-left actions" aria-hidden="true">
-                                &times;
-                            </button>
-                            <span
-                            ng-show="todo.status && !todo._edit"
-                            ng-click="updateTodoStatus(false);"
-                            class="glyphicon glyphicon-check actions"></span>
-                            <span
-                            ng-show="!todo.status && !todo._edit"
-                            ng-click="updateTodoStatus(true);"
-                            class="glyphicon glyphicon-unchecked actions"></span>
-                            
-                            <span ng-model="todo.value" ng-show="!todo._edit">
-                                {{todo.value}}
-                            </span>
+                        class="row todo-item list-group-item transparent" title="Double Click to Edit">
+
+                            <div class="col-md-1">
+                                <button ng-show="todo._edit" ng-click="todo._edit=false;"
+                                type="button" class="close pull-left actions" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <span
+                                ng-show="todo.status && !todo._edit"
+                                ng-click="updateTodoStatus(false);"
+                                class="glyphicon glyphicon-check actions"></span>
+                                <span
+                                ng-show="!todo.status && !todo._edit"
+                                ng-click="updateTodoStatus(true);"
+                                class="glyphicon glyphicon-unchecked actions"></span>
+                            </div>
+
+                            <div class="col-md-8">
+                                <span ng-model="todo.value" ng-show="!todo._edit">
+                                    {{todo.value}}
+                                </span>
+                            </div>
+
                             <!-- TODO Editing! -->
-                            <div class="input-group" ng-show="todo._edit">
-                                <input ng-model="todo._value" ng-init="todo._value=todo.value"
-                                key-enter="todo.value=todo._value;updateTodo();"
+                            <div class="col-md-11 input-group" ng-show="todo._edit">
+                                <input ng-model="todo._value" ng-init="todo._value=todo.value" set-focus="todo._edit"
+                                key-enter="todo.value=todo._value;updateTodo();" key-esc="todo._edit=false"
                                 type="text" class="form-control" placeholder="New Todo Item">
                                 <span class="input-group-btn">
                                     <button
@@ -97,12 +104,16 @@
                                 </span>
                             </div>
 
-                            <span ng-show="!todo._edit && todo._hover" ng-click=""
-                            class="glyphicon glyphicon-chevron-right pull-right actions" title="Sub-list"></span>
-                            <span ng-show="!todo._edit && todo._hover" ng-click="deleteTodo(todo, todoIdx, listIdx)"
-                            class="glyphicon glyphicon-trash pull-right actions"></span>
-                            <span ng-show="!todo._edit && todo._hover" ng-click="todo._edit=true;"
-                            class="glyphicon glyphicon-pencil pull-right actions"></span>
+
+                            <div class="col-md-3">
+<!--                                 <span ng-show="!todo._edit && todo._hover" ng-click=""
+                                class="glyphicon glyphicon-chevron-right pull-right actions" title="Sub-list"></span>
+ -->                                <span ng-show="!todo._edit && todo._hover" ng-click="deleteTodo(todo, todoIdx, listIdx)"
+                                class="glyphicon glyphicon-trash pull-right actions" title="Delete Todo"></span>
+                                <span ng-show="!todo._edit && todo._hover" ng-click="todo._edit=true;"
+                                class="glyphicon glyphicon-pencil pull-right actions" title="Edit Todo"></span>
+                            </div>
+
                         </li>
                         <li class="list-group-item transparent new-todo">
                             <div class="input-group">
