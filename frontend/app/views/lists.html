@@ -7,9 +7,13 @@
         <div class="container">
             <div class="col-md-4 col-sm-4 col-xs-6 col-md-offset-4 col-sm-offset-4 col-xs-offset-1">
                 <div class="input-group navbar-form">
-                    <input type="text" class="form-control" placeholder="New Todo List Name">
+                    <input
+                    ng-model="_newList.title" key-enter="createList()"
+                    type="text" class="form-control" placeholder="New List! Type & hit enter ...">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" title="Add new list">
+                        <button
+                        ng-click="createList()"
+                        class="btn btn-default" type="button" title="Add new list">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
                     </span>
@@ -24,42 +28,92 @@
     <div class="row lists">
         <ul>
             <li 
-            ng-repeat="list in lists" ng-init="listIdx = $index" 
+            ng-repeat="list in lists" ng-init="listIdx = $index"
             class="col-xs-12 col-sm-4 col-md-3"
             >
                 <div class="well transparent-dark todo-list">
-                    <center>
-                        <h4>{{list.title}}</h4>
+                    <center ng-mouseover="list._hover=true" ng-mouseleave="list._hover=false">
+                        <button ng-show="list._edit" ng-click="list._edit=false;"
+                        type="button" class="close pull-left actions" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4>
+                            <span ng-show="!list._edit">
+                                {{list.title}}
+                            </span>
+                            
+                            <!-- LIST Editing! -->
+                            <div class="input-group" ng-show="list._edit">
+                                <input ng-model="list._title" ng-init="list._title=list.title"
+                                key-enter="list.title=list._title;updateList();"
+                                type="text" class="form-control" placeholder="Edit List">
+                                <span class="input-group-btn">
+                                    <button
+                                    ng-click="list.title=list._title;updateList();"
+                                    class="btn btn-default" type="button" title="Edit List">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <span ng-show="!list._edit && list._hover" ng-click="deleteList()"
+                            class="glyphicon glyphicon-trash pull-right actions"></span>
+                            <span ng-show="!list._edit && list._hover" ng-click="list._edit=true;"
+                            class="glyphicon glyphicon-pencil pull-right actions"></span>
+                        </h4>
                     </center>
                     <ul class="list-group">
                         <li 
-                        ng-repeat="todo in list._todos" ng-init="todoIdx = $index" 
-                        class="list-group-item transparent"
-                        >
-                            <h5 ng-model="todo.value">
-                                <span
-                                ng-show="todo.status"
-                                ng-click="updateTodoStatus(false);"
-                                class="glyphicon glyphicon-check actions"></span>
-                                <span
-                                ng-show="!todo.status"
-                                ng-click="updateTodoStatus(true);"
-                                class="glyphicon glyphicon-unchecked actions"></span>
+                        ng-repeat="todo in list._todos" ng-init="todoIdx = $index" ng-Dblclick="todo._edit=true;"
+                        ng-mouseover="todo._hover=true" ng-mouseleave="todo._hover=false"
+                        class="list-group-item transparent">
+                            <button ng-show="todo._edit" ng-click="todo._edit=false;"
+                            type="button" class="close pull-left actions" aria-hidden="true">
+                                &times;
+                            </button>
+                            <span
+                            ng-show="todo.status && !todo._edit"
+                            ng-click="updateTodoStatus(false);"
+                            class="glyphicon glyphicon-check actions"></span>
+                            <span
+                            ng-show="!todo.status && !todo._edit"
+                            ng-click="updateTodoStatus(true);"
+                            class="glyphicon glyphicon-unchecked actions"></span>
+                            
+                            <span ng-model="todo.value" ng-show="!todo._edit">
                                 {{todo.value}}
-                                <span ng-click="deleteTodo(todo, todoIdx, listIdx)" class="glyphicon glyphicon-trash pull-right actions"></span>
-                                <span class="glyphicon glyphicon-pencil pull-right actions"></span>
-                            </h5>
+                            </span>
+                            <!-- TODO Editing! -->
+                            <div class="input-group" ng-show="todo._edit">
+                                <input ng-model="todo._value" ng-init="todo._value=todo.value"
+                                key-enter="todo.value=todo._value;updateTodo();"
+                                type="text" class="form-control" placeholder="New Todo Item">
+                                <span class="input-group-btn">
+                                    <button
+                                    ng-click="todo.value=todo._value;updateTodo();"
+                                    class="btn btn-default" type="button" title="Edit Todo">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <span ng-show="!todo._edit && todo._hover" ng-click=""
+                            class="glyphicon glyphicon-chevron-right pull-right actions" title="Sub-list"></span>
+                            <span ng-show="!todo._edit && todo._hover" ng-click="deleteTodo(todo, todoIdx, listIdx)"
+                            class="glyphicon glyphicon-trash pull-right actions"></span>
+                            <span ng-show="!todo._edit && todo._hover" ng-click="todo._edit=true;"
+                            class="glyphicon glyphicon-pencil pull-right actions"></span>
                         </li>
                         <li class="list-group-item transparent new-todo">
                             <div class="input-group">
-                                <input 
-                                type="text" class="form-control" placeholder="New Todo Item"
-                                ng-model="list._newTodo.value"
+                                <input
+                                type="text" class="form-control" placeholder="New Todo! Type & hit enter ..."
+                                ng-model="list._newTodo.value" key-enter="createTodo(list, listIdx)"
                                 >
                                 <span class="input-group-btn">
                                     <button
                                     ng-click="createTodo(list, listIdx)"
-                                    class="btn btn-default" type="button" title="Add new list">
+                                    class="btn btn-default" type="button" title="Add new Todo">
                                         <span class="glyphicon glyphicon-plus-sign"></span>
                                     </button>
                                 </span>

@@ -6,6 +6,7 @@ var togileApp = angular.module('frontendApp');
 togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
 
     $scope.lists = [];
+    $scope._newList = {title: ''};
 
     // Load All Lists
     api.lists.list(loadLists);
@@ -20,10 +21,54 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
         });
     }
 
-    function resetList(list) {
+    function resetList() {
+        $scope._newList = {title: ''};
+    }
+
+    function resetTodo(list) {
         list._newTodo = {value: '', status: false};
     }
 
+    // LISTS OPERATONS
+    $scope.createList = function(todo) {
+        api.lists.create(this._newList,
+            function(newList) {
+                newList._todos = [];
+                resetTodo(newList); // actually, initializing!
+                $scope.lists.push(newList);
+            },
+            function() {
+
+            }
+        );
+        resetList();
+    }
+
+    $scope.updateList = function() {
+        var _this = this;
+        api.lists.update(this.list,
+            function(data) {
+                _this.list._edit = false;
+            },
+            function() {
+
+            }
+        );
+    }
+
+    $scope.deleteList = function() {
+        var _this = this;
+        api.lists.remove(this.list,
+            function(data) {
+                $scope.lists.splice(_this.$index, 1);
+            },
+            function() {
+
+            }
+        );
+    }
+
+    // TODO OPERATIONS
     $scope.deleteTodo = function(todo, todoIdx, listIdx) {
         api.todos.remove(this.todo,
             function(){
@@ -48,7 +93,7 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
                 // ERROR!
             }
         );
-        resetList(list);
+        resetTodo(list);
     }
 
     $scope.updateTodoStatus = function(status) {
@@ -57,6 +102,18 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
         api.todos.update(this.todo,
             function(data) {
                 _this.todo.status = data.status;
+            },
+            function() {
+                // ERROR!
+            }
+        );
+    }
+
+    $scope.updateTodo = function() {
+        var _this = this;
+        api.todos.update(this.todo,
+            function(data) {
+                _this.todo._edit = false;
             },
             function() {
                 // ERROR!
