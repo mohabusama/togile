@@ -1,0 +1,51 @@
+<li ng-repeat="list in lists" ng-init="listIdx = $index" class="col-xs-12 col-sm-6 col-md-4">
+    <div class="well transparent-dark todo-list">
+        <center ng-mouseover="list._hover=true" ng-mouseleave="list._hover=false">
+            <button ng-show="list._edit" ng-click="list._edit=false;" type="button"
+            class="close pull-left actions" aria-hidden="true">
+                &times;
+            </button>
+            <h4>
+                <span ng-show="!list._edit" ng-Dblclick="list._edit=true;" title="Double Click to Edit">
+                    {{list.title}}
+                </span>
+                <!-- LIST Editing! -->
+                <div class="input-group" ng-show="list._edit">
+                    <input ng-model="list._title" ng-init="list._title=list.title" set-focus="list._edit"
+                    key-enter="list.title=list._title;updateList();" key-esc="list._edit=false"
+                    type="text" class="form-control" placeholder="Edit List">
+                    <span class="input-group-btn">
+                        <button ng-click="list.title=list._title;updateList();" class="btn btn-default"
+                        type="button" title="Edit List">
+                            <span class="glyphicon glyphicon-pencil">
+                            </span>
+                        </button>
+                    </span>
+                </div>
+                <span ng-show="!list._edit && list._hover" ng-click="deleteList()" class="glyphicon glyphicon-trash pull-right actions">
+                </span>
+                <span ng-show="!list._edit && list._hover" ng-click="list._edit=true;"
+                class="glyphicon glyphicon-pencil pull-right actions">
+                </span>
+            </h4>
+        </center>
+        <ul id="todos-container" class="list-group">
+            <!-- TODOs -->
+            <div ng-include="'/app/views/partials/todo.html'">
+            </div>
+            <li class="list-group-item transparent new-todo">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="New Todo! Type & hit enter ..."
+                    ng-model="list._newTodo.value" key-enter="createTodo(list, listIdx)">
+                    <span class="input-group-btn">
+                        <button ng-click="createTodo(list, listIdx)" class="btn btn-default" type="button"
+                        title="Add new Todo">
+                            <span class="glyphicon glyphicon-plus-sign">
+                            </span>
+                        </button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</li>

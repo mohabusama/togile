@@ -1,0 +1,44 @@
+<li ng-repeat="todo in list._todos" ng-init="todoIdx = $index" ng-Dblclick="todo._edit=true;"
+ng-mouseover="todo._hover=true" ng-mouseleave="todo._hover=false" class="row todo-item list-group-item transparent"
+title="Double Click to Edit">
+    <div class="col-md-1">
+        <button ng-show="todo._edit" ng-click="todo._edit=false;" type="button"
+        class="close pull-left actions" aria-hidden="true">
+            &times;
+        </button>
+        <span ng-show="todo.status && !todo._edit" ng-click="updateTodoStatus(false);"
+        class="glyphicon glyphicon-check actions">
+        </span>
+        <span ng-show="!todo.status && !todo._edit" ng-click="updateTodoStatus(true);"
+        class="glyphicon glyphicon-unchecked actions">
+        </span>
+    </div>
+    <div class="col-md-8">
+        <span ng-model="todo.value" ng-show="!todo._edit">
+            {{todo.value}}
+        </span>
+    </div>
+    <!-- TODO Editing! -->
+    <div class="col-md-11 input-group" ng-show="todo._edit">
+        <input ng-model="todo._value" ng-init="todo._value=todo.value" set-focus="todo._edit"
+        key-enter="todo.value=todo._value;updateTodo();" key-esc="todo._edit=false"
+        type="text" class="form-control" placeholder="New Todo Item">
+        <span class="input-group-btn">
+            <button ng-click="todo.value=todo._value;updateTodo();" class="btn btn-default"
+            type="button" title="Edit Todo">
+                <span class="glyphicon glyphicon-pencil">
+                </span>
+            </button>
+        </span>
+    </div>
+    <div class="col-md-3">
+        <!-- <span ng-show="!todo._edit && todo._hover" ng-click="" class="glyphicon
+        glyphicon-chevron-right pull-right actions" title="Sub-list"></span> -->
+        <span ng-show="!todo._edit && todo._hover" ng-click="deleteTodo(todo, todoIdx, listIdx)"
+        class="glyphicon glyphicon-trash pull-right actions" title="Delete Todo">
+        </span>
+        <span ng-show="!todo._edit && todo._hover" ng-click="todo._edit=true;"
+        class="glyphicon glyphicon-pencil pull-right actions" title="Edit Todo">
+        </span>
+    </div>
+</li>
