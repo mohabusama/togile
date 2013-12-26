@@ -1,138 +1,56 @@
 <div ng-controller="ListsCtrl" class="main">
-
     <header class="navbar navbar-default navbar-fixed-top" role="banner">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">togile</a>
         </div>
         <div class="container">
-            <div class="col-md-4 col-sm-4 col-xs-6 col-md-offset-4 col-sm-offset-4 col-xs-offset-1">
+            <div class="col-md-4 col-sm-6 col-xs-12 col-md-offset-4 col-sm-offset-4 col-xs-offset-1">
                 <div class="input-group navbar-form">
-                    <input
-                    ng-model="_newList.title" key-enter="createList()"
-                    type="text" class="form-control" placeholder="New List! Type & hit enter ...">
+                    <input ng-model="_newList.title" key-enter="createList()" type="text"
+                    class="form-control" placeholder="New List! Type & hit enter ...">
                     <span class="input-group-btn">
-                        <button
-                        ng-click="createList()"
-                        class="btn btn-default" type="button" title="Add new list">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <button ng-click="createList()" class="btn btn-default" type="button"
+                        title="Add new list">
+                            <span class="glyphicon glyphicon-plus">
+                            </span>
                         </button>
                     </span>
                 </div>
             </div>
-            <button class="btn btn-default pull-right navbar-btn" type="button" title="Click to start searching!">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
         </div>
     </header>
-
     <div class="row lists">
-        <ul>
-            <li 
-            ng-repeat="list in lists" ng-init="listIdx = $index"
-            class="col-xs-12 col-sm-4 col-md-3"
-            >
-                <div class="well transparent-dark todo-list">
-                    <center ng-mouseover="list._hover=true" ng-mouseleave="list._hover=false">
-                        <button ng-show="list._edit" ng-click="list._edit=false;"
-                        type="button" class="close pull-left actions" aria-hidden="true">
+        <ul class="col-md-10 col-sm-12 col-xs-12" ng-include="'/app/views/partials/list.html'">
+        </ul>
+        <div class="col-md-2 hidden-xs hidden-sm">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-search">
+                    </span>
+                </span>
+                <input type="text" class="form-control" placeholder="Quick Search ..." ng-model="needle">
+            </div>
+            <ul ng-repeat="list in lists" class="list-group search-list">
+                <li ng-repeat="todo in list._todos | filter:comparator" class="row todo-item search-todo-item list-group-item transparent">
+                    <div class="col-md-1">
+                        <button ng-show="todo._edit" ng-click="todo._edit=false;" type="button"
+                        class="close pull-left actions" aria-hidden="true">
                             &times;
                         </button>
-                        <h4>
-                            <span
-                            ng-show="!list._edit" ng-Dblclick="list._edit=true;" title="Double Click to Edit">
-                                {{list.title}}
-                            </span>
-                            
-                            <!-- LIST Editing! -->
-                            <div class="input-group" ng-show="list._edit">
-                                <input ng-model="list._title" ng-init="list._title=list.title" set-focus="list._edit"
-                                key-enter="list.title=list._title;updateList();" key-esc="list._edit=false"
-                                type="text" class="form-control" placeholder="Edit List">
-                                <span class="input-group-btn">
-                                    <button
-                                    ng-click="list.title=list._title;updateList();"
-                                    class="btn btn-default" type="button" title="Edit List">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    </button>
-                                </span>
-                            </div>
-
-                            <span ng-show="!list._edit && list._hover" ng-click="deleteList()"
-                            class="glyphicon glyphicon-trash pull-right actions"></span>
-                            <span ng-show="!list._edit && list._hover" ng-click="list._edit=true;"
-                            class="glyphicon glyphicon-pencil pull-right actions"></span>
-                        </h4>
-                    </center>
-                    <ul class="list-group">
-                        <li 
-                        ng-repeat="todo in list._todos" ng-init="todoIdx = $index" ng-Dblclick="todo._edit=true;"
-                        ng-mouseover="todo._hover=true" ng-mouseleave="todo._hover=false"
-                        class="row todo-item list-group-item transparent" title="Double Click to Edit">
-
-                            <div class="col-md-1">
-                                <button ng-show="todo._edit" ng-click="todo._edit=false;"
-                                type="button" class="close pull-left actions" aria-hidden="true">
-                                    &times;
-                                </button>
-                                <span
-                                ng-show="todo.status && !todo._edit"
-                                ng-click="updateTodoStatus(false);"
-                                class="glyphicon glyphicon-check actions"></span>
-                                <span
-                                ng-show="!todo.status && !todo._edit"
-                                ng-click="updateTodoStatus(true);"
-                                class="glyphicon glyphicon-unchecked actions"></span>
-                            </div>
-
-                            <div class="col-md-8">
-                                <span ng-model="todo.value" ng-show="!todo._edit">
-                                    {{todo.value}}
-                                </span>
-                            </div>
-
-                            <!-- TODO Editing! -->
-                            <div class="col-md-11 input-group" ng-show="todo._edit">
-                                <input ng-model="todo._value" ng-init="todo._value=todo.value" set-focus="todo._edit"
-                                key-enter="todo.value=todo._value;updateTodo();" key-esc="todo._edit=false"
-                                type="text" class="form-control" placeholder="New Todo Item">
-                                <span class="input-group-btn">
-                                    <button
-                                    ng-click="todo.value=todo._value;updateTodo();"
-                                    class="btn btn-default" type="button" title="Edit Todo">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    </button>
-                                </span>
-                            </div>
-
-
-                            <div class="col-md-3">
-<!--                                 <span ng-show="!todo._edit && todo._hover" ng-click=""
-                                class="glyphicon glyphicon-chevron-right pull-right actions" title="Sub-list"></span>
- -->                                <span ng-show="!todo._edit && todo._hover" ng-click="deleteTodo(todo, todoIdx, listIdx)"
-                                class="glyphicon glyphicon-trash pull-right actions" title="Delete Todo"></span>
-                                <span ng-show="!todo._edit && todo._hover" ng-click="todo._edit=true;"
-                                class="glyphicon glyphicon-pencil pull-right actions" title="Edit Todo"></span>
-                            </div>
-
-                        </li>
-                        <li class="list-group-item transparent new-todo">
-                            <div class="input-group">
-                                <input
-                                type="text" class="form-control" placeholder="New Todo! Type & hit enter ..."
-                                ng-model="list._newTodo.value" key-enter="createTodo(list, listIdx)"
-                                >
-                                <span class="input-group-btn">
-                                    <button
-                                    ng-click="createTodo(list, listIdx)"
-                                    class="btn btn-default" type="button" title="Add new Todo">
-                                        <span class="glyphicon glyphicon-plus-sign"></span>
-                                    </button>
-                                </span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
+                        <span ng-show="todo.status && !todo._edit" ng-click="updateTodoStatus(false);"
+                        class="glyphicon glyphicon-check actions">
+                        </span>
+                        <span ng-show="!todo.status && !todo._edit" ng-click="updateTodoStatus(true);"
+                        class="glyphicon glyphicon-unchecked actions">
+                        </span>
+                    </div>
+                    <div class="col-md-10">
+                        <span ng-model="todo.value" ng-show="!todo._edit">
+                            {{todo.value}}
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

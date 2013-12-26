@@ -52,3 +52,13 @@ ul, ol {
   border: none;
   margin-bottom: -20px !important;
 }
+
+.search-list {
+  margin: 0px;
+}
+
+.search-todo-item {
+  border: none;
+  border-bottom: 0.1em dotted gray;
+  margin: 0px;
+}

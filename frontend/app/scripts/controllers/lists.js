@@ -120,4 +120,16 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
             }
         );
     }
+
+    // SEARCH
+    $scope.comparator = function (expected) {
+        // TODO: Fuzzy search!
+        var val = expected.value.toLowerCase(),
+            needle = $scope.needle;
+        if(needle && val.indexOf(needle.toLowerCase()) != -1) {
+            return true;
+        }
+        return false;
+    }
 });
+
