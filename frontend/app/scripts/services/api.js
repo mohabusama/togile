@@ -10,9 +10,9 @@ togileApp.factory('api', function($rootScope, Restangular) {
     }
 
     function _getTodosApi(list, todo) {
-        var uri = (list) ? list.resource_uri.replace(/\/$/, '') : '';
+        var uri = (list) ? list.resource_uri.replace(/\/$/, '') : '';  // jshint ignore:line
         return (todo) ?
-            api.oneUrl('todos', todo.resource_uri) :
+            api.oneUrl('todos', todo.resource_uri) :  // jshint ignore:line
             api.oneUrl('lists', uri).all('todos');
     }
 

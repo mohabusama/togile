@@ -1,5 +1,6 @@
 'use strict';
 
+/*globals togileApp*/
 
 togileApp.directive('keyEnter', function () {
     return function (scope, element, attr) {
@@ -11,7 +12,7 @@ togileApp.directive('keyEnter', function () {
                 event.preventDefault();
             }
         });
-    }
+    };
 }).directive('keyEsc', function () {
     return function (scope, element, attr) {
         element.bind('keyup keypress', function(event) {
@@ -22,5 +23,5 @@ togileApp.directive('keyEnter', function () {
                 event.preventDefault();
             }
         });
-    }
+    };
 });

@@ -53,6 +53,10 @@ ul, ol {
   margin-bottom: -20px !important;
 }
 
+.search {
+  right: 0;
+}
+
 .search-list {
   margin: 0px;
 }

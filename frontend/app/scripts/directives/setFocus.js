@@ -1,5 +1,6 @@
 'use strict';
 
+/*globals togileApp*/
 
 togileApp.directive('setFocus', function($timeout) {
     return function(scope, element, attr) {

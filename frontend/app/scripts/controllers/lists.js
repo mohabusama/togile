@@ -13,8 +13,8 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
 
     function loadLists(data) {
         $scope.lists = data;
-        _.each($scope.lists, function(list, index){
-            api.todos.list(list, function(data) {
+        _.each($scope.lists, function (list, index) {
+            api.todos.list(list, function (data) {
                 $scope.lists[index]._todos = data;
                 $scope.lists[index]._newTodo = {value: '', status: false};
             });
@@ -30,106 +30,93 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
     }
 
     // LISTS OPERATONS
-    $scope.createList = function(todo) {
+    $scope.createList = function () {
         api.lists.create(this._newList,
-            function(newList) {
+            function (newList) {
                 newList._todos = [];
                 resetTodo(newList); // actually, initializing!
                 $scope.lists.push(newList);
             },
-            function() {
+            function () {
 
-            }
-        );
+        });
         resetList();
-    }
+    };
 
-    $scope.updateList = function() {
+    $scope.updateList = function () {
         var _this = this;
         api.lists.update(this.list,
-            function(data) {
+            function () {
                 _this.list._edit = false;
             },
-            function() {
-
-            }
+            function () {}
         );
-    }
+    };
 
-    $scope.deleteList = function() {
+    $scope.deleteList = function () {
         var _this = this;
         api.lists.remove(this.list,
-            function(data) {
+            function () {
                 $scope.lists.splice(_this.$index, 1);
             },
-            function() {
-
-            }
+            function () {}
         );
-    }
+    };
 
     // TODO OPERATIONS
-    $scope.deleteTodo = function(todo, todoIdx, listIdx) {
+    $scope.deleteTodo = function (todo, todoIdx, listIdx) {
         api.todos.remove(this.todo,
-            function(){
+            function () {
                 // success
                 $scope.lists[listIdx]._todos.splice(todoIdx, 1);
             },
-            function(){
-                // ERROR!
-            }
+            function () {}
         );
-    }
+    };
 
-    $scope.createTodo = function(list, listIdx) {
+    $scope.createTodo = function (list, listIdx) {
         if (!list._newTodo.value) {
             return;
         }
         api.todos.create(list, list._newTodo,
-            function(todo) {
+            function (todo) {
                 $scope.lists[listIdx]._todos.push(todo);
             },
-            function() {
-                // ERROR!
-            }
+            function () {}
         );
         resetTodo(list);
-    }
+    };
 
-    $scope.updateTodoStatus = function(status) {
+    $scope.updateTodoStatus = function (status) {
         var _this = this;
         this.todo.status = status;
         api.todos.update(this.todo,
-            function(data) {
+            function (data) {
                 _this.todo.status = data.status;
             },
-            function() {
-                // ERROR!
-            }
+            function () {}
         );
-    }
+    };
 
-    $scope.updateTodo = function() {
+    $scope.updateTodo = function () {
         var _this = this;
         api.todos.update(this.todo,
-            function(data) {
+            function () {
                 _this.todo._edit = false;
             },
-            function() {
-                // ERROR!
-            }
+            function () {}
         );
-    }
+    };
 
     // SEARCH
     $scope.comparator = function (expected) {
         // TODO: Fuzzy search!
         var val = expected.value.toLowerCase(),
             needle = $scope.needle;
-        if(needle && val.indexOf(needle.toLowerCase()) != -1) {
+        if(needle && val.indexOf(needle.toLowerCase()) !== -1) {
             return true;
         }
         return false;
-    }
+    };
 });
 

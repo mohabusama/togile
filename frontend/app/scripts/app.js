@@ -5,7 +5,7 @@ var togileApp = angular.module('frontendApp',
 );
 
 // ROUTING
-togileApp.config(function($routeProvider) {
+togileApp.config(function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
@@ -20,19 +20,19 @@ togileApp.config(function($routeProvider) {
 });
 
 // Restangular configs
-togileApp.run(function($rootScope, Restangular, $cookieStore, $cookies) {
+togileApp.run(function ($rootScope, Restangular, $cookieStore, $cookies) {
     $rootScope.user = 1;
 
     Restangular.setBaseUrl('/api/v1');
 
     Restangular.setRequestSuffix('/');
 
-    Restangular.setResponseExtractor(function(response, operation) {
+    Restangular.setResponseExtractor(function (response, operation) {
         var apiResponse = response;
         if (operation === 'getList') {
             // Received response: { objects:[...], meta:{...} }
             apiResponse = response.objects;
-            apiResponse._meta = response.meta
+            apiResponse._meta = response.meta;
         }
         return apiResponse;
     });
@@ -43,6 +43,6 @@ togileApp.run(function($rootScope, Restangular, $cookieStore, $cookies) {
 
     //CSRF TOKEN!
     Restangular.setDefaultHeaders({
-        "X-CSRFTOKEN": $cookies.csrftoken
+        'X-CSRFTOKEN': $cookies.csrftoken
     });
 });
