@@ -66,9 +66,9 @@ module.exports = function(grunt) {
 
 
     // grunt.registerTask('test', ['clean:server', 'concurrent:test', 'autoprefixer', 'connect:test', 'karma']);
-    grunt.registerTask('test', ['karma']);
+    grunt.registerTask('test', ['jshint:all', 'karma']);
 
     // grunt.registerTask('build', ['clean:dist', 'useminPrepare', 'concurrent:dist', 'autoprefixer', 'concat', 'ngmin', 'copy:dist', 'cdnify', 'cssmin', 'uglify', 'rev', 'usemin']);
 
-    grunt.registerTask('default', ['newer:jshint', 'test']);
+    grunt.registerTask('default', ['jshint:all', 'test']);
 };
