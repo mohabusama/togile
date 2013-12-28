@@ -7,5 +7,4 @@ pep8==1.4.6
 python-dateutil==2.2
 python-mimeparse==0.1.4
 six==1.4.1
-virtual-node==0.0.4
 wsgiref==0.1.2
