@@ -17,11 +17,10 @@ module.exports = function(config) {
       'app/components/angular-mocks/angular-mocks.js',
       'app/components/restangular/dist/restangular.js',
       'app/components/underscore/underscore.js',
-      'app/components/bootstrap/dist/bootstrap.js',
       'app/components/jquery/jquery.js',
+      'app/components/bootstrap/dist/js/bootstrap.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
 

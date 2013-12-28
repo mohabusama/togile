@@ -38,7 +38,6 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
                 $scope.lists.push(newList);
             },
             function () {
-
         });
         resetList();
     };
@@ -64,7 +63,7 @@ togileApp.controller('ListsCtrl', function ($scope, Restangular, api) {
     };
 
     // TODO OPERATIONS
-    $scope.deleteTodo = function (todo, todoIdx, listIdx) {
+    $scope.deleteTodo = function (todoIdx, listIdx) {
         api.todos.remove(this.todo,
             function () {
                 // success
