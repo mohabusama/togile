@@ -1,0 +1,13 @@
+{
+    "manifest_version": 2,
+    "name": "togile",
+    "description": "Your Simple, Agile TODO App!",
+    "version": "0.1",
+    "permissions": [
+        "tabs"
+    ],
+    "browser_action": {},
+    "background": {
+        "scripts": ["action.js"]
+    }
+}
