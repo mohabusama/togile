@@ -21,7 +21,7 @@ ul, ol {
 }
 
 .actions {
-  margin-right: 5px;
+  /*margin-right: 5px;*/
   cursor: pointer;
 }
 
@@ -39,7 +39,7 @@ ul, ol {
   /*border: none;*/
   border-radius: 0px !important;
   padding-bottom: 0px;
-  padding-top: 5px;
+  padding-top: 0px;
 }
 
 .todo-item {
@@ -49,9 +49,15 @@ ul, ol {
   margin-left: 0px;
 }
 
+.todo-item .row .col-md-1 span,
+.todo-item .row .col-md-1 button
+{
+  margin-left: 10px;
+}
+
 .new-todo {
   border: none;
-  margin-bottom: -20px !important;
+  /*margin-bottom: -20px !important;*/
 }
 
 .search {
