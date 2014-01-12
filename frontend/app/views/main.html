@@ -1,47 +1,45 @@
 <div class="container">
-    <div class="row ">
-        <div class="jumbotron ">
-            <h1>
-                togile
-                <br>
-                <small>
-                    Your Agile Todos Dashboard
-                </small>
-            </h1>
-            <p>
-                <a class="btn btn-lg btn-primary" role="button" href="#">Signup Now!</a>
-            </p>
+    <div id="tg-carousel" class="carousel slide" data-ride="carousel" data-interval="8000">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#tg-carousel" data-slide-to="0" class="active">
+            </li>
+            <li data-target="#tg-carousel" data-slide-to="1">
+            </li>
+        </ol>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            
+            <div class="item active jumbotron transparent-light">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1><img class="logo-lg" src="images/tg.png"/> togile</h1>
+                        <p>Your Agile TODO Dashboard!</p>
+                        <p class="signin">
+                            <a href="/login/google">
+                                <button class="btn btn-lg">Sign in with Google</button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item jumbotron transparent-light">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1><img class="logo-lg" src="images/tg.png"/> togile</h1>
+                        <p>It's <span class="label label-default">
+                            <a href="https://github.com/mohabusama/togile" target="_blank"><i class="fa fa-github-square"></i> Open Source</a>
+                        </span>. Deploy it on Your Own server!</p>
+                        <p class="signin">
+                            <a href="/login/google">
+                                <button class="btn btn-lg">Sign in with Google</button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-
-<nav class="navbar navbar-fixed-bottom navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">
-                    Toggle navigation
-                </span>
-                <span class="icon-bar">
-                </span>
-                <span class="icon-bar">
-                </span>
-                <span class="icon-bar">
-                </span>
-            </button>
-            <a class="navbar-brand" href="/index.html">togile</a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="#about">About</a>
-                </li>
-                <li>
-                    <a href="https://github.com/mohabusama/togile">
-                        Source
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>

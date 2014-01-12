@@ -21,7 +21,8 @@ togileApp.config(function ($routeProvider) {
 
 // Restangular configs
 togileApp.run(function ($rootScope, Restangular, $cookieStore, $cookies) {
-    $rootScope.user = 1;
+
+    $rootScope.user = $cookies.togile ? $cookies.togile : null;
 
     Restangular.setBaseUrl('/api/v1');
 

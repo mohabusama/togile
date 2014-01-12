@@ -3,16 +3,59 @@ body {
   padding-top: 20px;
   /*padding-bottom: 20px;*/
   padding-bottom: 70px;
-  background-image: url('../images/back.png');
+  /*background-image: url('../images/back.jpg');*/
+}
+
+.back {
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: fixed;
+  background: url('../images/back.jpg') no-repeat center center fixed;
+  background-size: cover;
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  -o-filter: blur(3px);
+  -ms-filter: blur(3px);
 }
 
 ul, ol {
   list-style-type: none;
 }
 
+.logo {
+  width: 20px;
+  height: 20px;
+}
+
+.logo-lg {
+  width: 60px;
+  height: 60px;
+}
+
+.carousel,
+.carousel .item
+{
+  height: 500px;
+}
+
+.carousel-caption {
+  top: 30%;
+}
+
+.item {
+  opacity: 0.8;
+}
+
 /*Togile structures*/
 .main {
   padding: 0 15px;
+}
+
+.white {
+  color: white !important;
 }
 
 .lists {
@@ -25,14 +68,33 @@ ul, ol {
   cursor: pointer;
 }
 
-.transparent {
-  background-color: rgba(245, 245, 245, 0.1) !important;
-  /*border-color: rgba(245, 245, 245, 0.9) !important;*/
+.transparent,
+input
+{
+  background-color: rgba(90, 90, 90, 0.5) !important;
+  color: white !important;
 }
 
-.transparent-dark {
-  background-color: rgba(245, 245, 245, 0.1) !important;
-  /*border-color: rgba(245, 245, 245, 0.9) !important;*/
+.transparent-light {
+  background-color: rgba(50, 50, 50, 0.8) !important;
+  color: white !important;
+}
+
+.transparent-dark,
+.label,
+button
+{
+  background-color: rgba(20, 20, 20, 0.8) !important;
+  color: white !important;
+}
+
+.label a {
+  color: white;
+  text-decoration: none;
+}
+
+.signin {
+  margin-top: 7%;
 }
 
 .todo-list {
@@ -40,6 +102,11 @@ ul, ol {
   border-radius: 0px !important;
   padding-bottom: 0px;
   padding-top: 0px;
+  color: white;
+}
+
+.list-group-item {
+  border: none;
 }
 
 .todo-item {
@@ -47,6 +114,8 @@ ul, ol {
   padding-left:  0px;
   margin-right: 0px;
   margin-left: 0px;
+  border-bottom: 0.1em dotted white !important;
+  border-radius: 0px !important;
 }
 
 .todo-item .row .col-md-1 span,
@@ -70,6 +139,6 @@ ul, ol {
 
 .search-todo-item {
   border: none;
-  border-bottom: 0.1em dotted gray;
+  border-bottom: 0.1em dotted white;
   margin: 0px;
 }

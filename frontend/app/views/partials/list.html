@@ -1,7 +1,7 @@
 <li ng-repeat="list in lists" ng-init="listIdx = $index" class="col-xs-12 col-sm-6 col-md-4">
-    <div class="panel panel-default transparent-dark todo-list">
+    <div class="panel panel-default transparent todo-list">
         <div ng-mouseover="list._hover=true" ng-mouseleave="list._hover=false"
-        ng-Dblclick="list._edit=true;" class="panel-heading">
+        ng-Dblclick="list._edit=true;" class="panel-heading transparent-dark">
             <div class="row">
                 <button ng-show="list._edit" ng-click="list._edit=false;" type="button"
                 class="close pull-left actions" aria-hidden="true">
