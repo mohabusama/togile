@@ -3,6 +3,7 @@
 *.pyc
 *.db
 local_settings.py
+prod_settings.py
 node_modules/
 frontend/app/components
 .vagrant

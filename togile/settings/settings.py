@@ -10,25 +10,19 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+DEBUG = True
+TEMPLATE_DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '4h#*p9u-zm1(64fbo#3=)cfv#%bl5$vus9pz7x%n-+tjlsnn6c'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -106,6 +100,13 @@ SOCIAL_AUTH_LOGIN_URL = '/login'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/'
 
-
 FRONTEND_APP_INDEX = STATIC_URL + 'index.html'
 FRONTEND_APP_LISTS = STATIC_URL + 'index.html#/lists'
+
+if 'TOGILE_PRODUCTION' in os.environ:
+    from prod_settings import *  # NOQA
+else:
+    try:
+        from local_settings import *  # NOQA
+    except ImportError:
+        pass
