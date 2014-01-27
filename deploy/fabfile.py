@@ -8,9 +8,9 @@ from fabtools import require
 from fabtools.python import virtualenv
 
 import settings
+from prod_settings import DATABASES
 
-
-LOCAL_BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+LOCAL_BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 # Repo Path on remote server!
 REPO_PATH = os.path.join(settings.TOGILE_PATH, 'togile')
@@ -35,7 +35,7 @@ def deploy():
 
 
 def _install_pkgs():
-    require.deb.uptodate_index(max_age={'day': 1})
+    require.deb.uptodate_index(max_age={'day': 7})
     for pkg, version in settings.DEB_PKGS:
         require.deb.package(pkg, version=version)
 
@@ -71,16 +71,14 @@ def _adjust_app_settings():
         raise Exception('Cannot Find Production Settings File: %s' %
                         local_settings_path)
 
-    remote_settings_path = os.path.join(REPO_PATH, 'settings',
+    remote_settings_path = os.path.join(REPO_PATH, 'togile', 'settings',
                                         'prod_settings.py')
 
-    require.file(remote_settings_path, source=local_settings_path)
+    require.files.file(remote_settings_path, source=local_settings_path)
 
 
 def _prepare_db():
     # Create DB and DB Users, from Production settings
-    from prod_settings import DATABASES
-
     require.postgres.server()
 
     db_user, db_pass = settings.DB_SUPERUSER
@@ -88,7 +86,7 @@ def _prepare_db():
 
     for db in DATABASES.itervalues():
         require.postgres.user(db['USER'], password=db['PASSWORD'],
-                              create_role=True)
+                              createrole=True)
         require.postgres.database(db['NAME'], owner=db['USER'])
 
     # Assuming Virtual Env activated!
@@ -100,4 +98,3 @@ def _prepare_db():
         for fixture in os.listdir(fixtures_path):
             if fixture.endswith('json'):
                 run('python manage.py loaddata deploy/fixtures/%s' % fixture)
-    return

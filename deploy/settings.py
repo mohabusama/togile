@@ -14,6 +14,8 @@ DEB_PKGS = (
     ('postgresql-9.1', ''),
     ('python-dev', ''),
     ('memcached', ''),
+    ('g++', ''),
+    ('libpq-dev', ''),
 )
 
 # Tuples of Usernames and Passwords
