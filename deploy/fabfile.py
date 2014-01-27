@@ -1,10 +1,10 @@
 import os
 
-from fabric.api import task, cd, run
+from fabric.api import task, cd, run, sudo
 from fabric.context_managers import prefix
 from fabric.context_managers import settings as fsettings
 
-from fabtools import require
+from fabtools import require, files
 from fabtools.python import virtualenv
 
 import settings
@@ -32,6 +32,7 @@ def deploy():
             _install_requirements()
             _adjust_app_settings()
             _prepare_db()
+            _prepare_service(venv)
 
 
 def _install_pkgs():
@@ -95,6 +96,42 @@ def _prepare_db():
         run('python manage.py migrate')
         # Load fixtures
         fixtures_path = os.path.join(REPO_PATH, 'deploy', 'fixtures')
-        for fixture in os.listdir(fixtures_path):
+        fixtures = run('ls %s' % fixtures_path).split()
+        for fixture in fixtures:
             if fixture.endswith('json'):
                 run('python manage.py loaddata deploy/fixtures/%s' % fixture)
+
+
+def _prepare_service(venv):
+    # logs
+    log_dir = os.path.join(venv, 'log')
+    require.directory(log_dir)
+
+    # Nginx
+    require.nginx.disabled('default')
+
+    conf = 'nginx/togile.conf'
+    nginx_log = os.path.join(log_dir, 'nginx.log')
+    static = os.path.join(REPO_PATH, 'frontend', 'app')
+    require.nginx.site(settings.NGINX['server_name'], template_source=conf,
+                       nginx_log=nginx_log, togile_static=static)
+
+    # CIRCUS
+
+    # Upstart Conf
+    circus_dir = os.path.join(venv, 'circus')
+    require.directory(circus_dir)
+    context = {
+        'venv': venv,
+        'circus': circus_dir,
+        'togile': REPO_PATH,
+        'user': settings.TOGILE_USER[0]
+    }
+    files.upload_template('circus/circus.conf', '/etc/init/circus.conf',
+                          context=context, use_sudo=True)
+    # Web INI
+    web_ini = os.path.join(context['circus'], 'web.ini')
+    files.upload_template('circus/circus.ini', web_ini, context=context)
+
+    # Start Circus
+    sudo('service circus start')
