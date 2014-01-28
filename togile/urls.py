@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.static import static
 
 from togile.api import togile_api
+from togile.settings import APP_URL, APP_PATH
 
 
 admin.autodiscover()
@@ -17,3 +19,5 @@ urlpatterns = patterns(
 )
 
 urlpatterns += staticfiles_urlpatterns()
+
+urlpatterns += static(APP_URL, document_root=APP_PATH)

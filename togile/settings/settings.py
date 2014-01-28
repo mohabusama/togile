@@ -73,11 +73,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_URL = '/app/'
+STATIC_URL = '/static/'
+APP_URL = '/app/'
+APP_PATH = os.path.join(BASE_DIR, 'frontend', 'app')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'frontend', 'app'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'frontend', 'app'),
+# )
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -100,8 +102,8 @@ SOCIAL_AUTH_LOGIN_URL = '/login'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/'
 
-FRONTEND_APP_INDEX = STATIC_URL + 'index.html'
-FRONTEND_APP_LISTS = STATIC_URL + 'index.html#/lists'
+FRONTEND_APP_INDEX = APP_URL + 'index.html'
+FRONTEND_APP_LISTS = APP_URL + 'index.html#/lists'
 
 if 'TOGILE_PRODUCTION' in os.environ:
     from prod_settings import *  # NOQA
