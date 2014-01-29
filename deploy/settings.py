@@ -15,6 +15,7 @@ DEB_PKGS = (
     ('python-dev', ''),
     ('memcached', ''),
     ('g++', ''),
+    ('make', ''),
     ('libpq-dev', ''),
 )
 
