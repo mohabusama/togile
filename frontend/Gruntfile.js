@@ -24,21 +24,6 @@ module.exports = function(grunt) {
             dist: 'dist'
         },
 
-        // Watches files for changes and runs tasks based on the changed files
-        watch: {
-            js: {
-                files: ['{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js'],
-                tasks: ['newer:jshint:all']
-            },
-            jsTest: {
-                files: ['test/spec/{,*/}*.js'],
-                tasks: ['newer:jshint:test', 'karma']
-            },
-            gruntfile: {
-                files: ['Gruntfile.js']
-            }
-        },
-
         // Make sure code styles are up to par and there are no obvious mistakes
         jshint: {
             options: {
@@ -63,12 +48,7 @@ module.exports = function(grunt) {
         }
     });
 
-
-
-    // grunt.registerTask('test', ['clean:server', 'concurrent:test', 'autoprefixer', 'connect:test', 'karma']);
     grunt.registerTask('test', ['jshint:all', 'karma']);
-
-    // grunt.registerTask('build', ['clean:dist', 'useminPrepare', 'concurrent:dist', 'autoprefixer', 'concat', 'ngmin', 'copy:dist', 'cdnify', 'cssmin', 'uglify', 'rev', 'usemin']);
 
     grunt.registerTask('default', ['jshint:all', 'test']);
 };
