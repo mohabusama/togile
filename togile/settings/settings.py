@@ -12,11 +12,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
-DEBUG = True
-TEMPLATE_DEBUG = True
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '4h#*p9u-zm1(64fbo#3=)cfv#%bl5$vus9pz7x%n-+tjlsnn6c'
 
@@ -53,6 +48,10 @@ WSGI_APPLICATION = 'togile.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 if 'TOGILE_PRODUCTION' not in os.environ:
+
+    DEBUG = True
+    TEMPLATE_DEBUG = True
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
