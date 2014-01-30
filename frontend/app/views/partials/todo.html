@@ -20,18 +20,17 @@ title="Double Click to Edit">
             </span>
         </div>
         <!-- TODO Editing! -->
-        <div class="col-md-11 input-group" ng-show="todo._edit">
+        <form class="col-md-11 input-group" ng-show="todo._edit" ng-submit="todo.value=todo._value;updateTodo();">
             <input ng-model="todo._value" ng-init="todo._value=todo.value" set-focus="todo._edit"
-            key-enter="todo.value=todo._value;updateTodo();" key-esc="todo._edit=false"
+            key-esc="todo._edit=false"
             type="text" class="form-control" placeholder="New Todo Item">
             <span class="input-group-btn">
-                <button ng-click="todo.value=todo._value;updateTodo();" class="btn btn-default"
-                type="button" title="Edit Todo">
+                <button class="btn btn-default" type="submit" title="Edit Todo">
                     <span class="fa fa-pencil">
                     </span>
                 </button>
             </span>
-        </div>
+        </form>
         <div class="col-md-3">
             <!-- <span ng-show="!todo._edit && todo._hover" ng-click="" class="glyphicon
             glyphicon-chevron-right pull-right actions" title="Sub-list"></span> -->

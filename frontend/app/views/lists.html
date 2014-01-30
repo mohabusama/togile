@@ -5,23 +5,36 @@
         </div>
         <div class="container">
             <div class="col-md-4 col-sm-6 col-xs-8 col-md-offset-4 col-sm-offset-4 col-xs-offset-1">
-                <div class="input-group navbar-form">
-                    <input ng-model="_newList.title" key-enter="createList()" type="text"
+                <form class="input-group navbar-form" ng-submit="createList()">
+                    <input ng-model="_newList.title" type="text"
                     class="form-control transparent" placeholder="New List! Type & hit enter ...">
                     <span class="input-group-btn ">
-                        <button ng-click="createList()" class="btn btn-default" type="button"
-                        title="Add new list">
+                        <button class="btn btn-default" type="submit" title="Add new list">
                             <span class="glyphicon glyphicon-plus">
                             </span>
                         </button>
                     </span>
-                </div>
+                </form>
             </div>
         </div>
     </header>
     <div class="row lists">
         <ul class="col-md-10 col-sm-12 col-xs-12" ng-include="'/app/views/partials/list.html'">
         </ul>
+        <div class="well transparent-dark col-md-2 col-sm-2 col-xs-10 col-md-offset-5" ng-show="!lists.length">
+            <center>You haven't created any Lists yet!</center>
+            <form class="input-group navbar-form" ng-submit="createList()">
+                <input ng-model="_newList.title" type="text"
+                class="form-control transparent" placeholder="Start here ...">
+                <span class="input-group-btn ">
+                    <button class="btn btn-default" type="submit" title="Add new list">
+                        <span class="glyphicon glyphicon-plus">
+                        </span>
+                    </button>
+                </span>
+            </form>
+        </div>
+        <!-- SEARCH -->
         <div class="col-md-2 hidden-xs hidden-sm affix search">
             <div class="input-group">
                 <span class="input-group-addon transparent-dark">

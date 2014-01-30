@@ -12,18 +12,17 @@
                         <span ng-show="!list._edit" title="Double Click to Edit">
                             {{list.title}}
                         </span>
-                        <div class="input-group" ng-show="list._edit">
+                        <form class="input-group" ng-show="list._edit" ng-submit="list.title=list._title;updateList();" >
                             <input ng-model="list._title" ng-init="list._title=list.title" set-focus="list._edit"
-                            key-enter="list.title=list._title;updateList();" key-esc="list._edit=false"
+                            key-esc="list._edit=false"
                             type="text" class="form-control" placeholder="Edit List">
                             <span class="input-group-btn">
-                                <button ng-click="list.title=list._title;updateList();" class="btn btn-default"
-                                type="button" title="Edit List">
+                                <button class="btn btn-default" title="Edit List" type="submit">
                                     <span class="fa fa-pencil">
                                     </span>
                                 </button>
                             </span>
-                        </div>
+                        </form>
                     </center>
                 </div>
                 <div class="col-md-3 col-sm-3">
@@ -39,17 +38,16 @@
             <!-- TODOs -->
             <div ng-include="'/app/views/partials/todo.html'"></div>
             <li class="list-group-item transparent new-todo">
-                <div class="input-group">
+                <form class="input-group" ng-submit="createTodo(list, listIdx)">
                     <input type="text" class="form-control" placeholder="New Todo! Type & hit enter ..."
-                    ng-model="list._newTodo.value" key-enter="createTodo(list, listIdx)">
+                    ng-model="list._newTodo.value" >
                     <span class="input-group-btn">
-                        <button ng-click="createTodo(list, listIdx)" class="btn btn-default" type="button"
-                        title="Add new Todo">
+                        <button class="btn btn-default" type="submit" title="Add new Todo">
                             <span class="glyphicon glyphicon-plus-sign">
                             </span>
                         </button>
                     </span>
-                </div>
+                </form>
             </li>
         </ul>
     </div>
