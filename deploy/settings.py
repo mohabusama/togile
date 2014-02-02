@@ -4,10 +4,8 @@ Deployment Settings
 Used by fabfile
 """
 
-# User name and password
+# Username, Password and SSH Key file path
 TOGILE_USER = ('togile', 'tgpass')
-
-DB_SUPERUSER = ('tgsuper', 'tgpostgress3kret')
 
 DEB_PKGS = (
     ('nginx', ''),
@@ -19,14 +17,23 @@ DEB_PKGS = (
     ('libpq-dev', ''),
 )
 
-# Tuples of Usernames and Passwords
-# e.g USERS = (('user', 'userPass'),)
-USERS = (TOGILE_USER,)
-
-TOGILE_PATH = '/home/%s/togile' % TOGILE_USER[0]
+USERS = ()
 
 TOGILE_REPO = 'https://github.com/mohabusama/togile'
 
 NGINX = {
     'server_name': 'togile.local'
 }
+
+# Override by local deploy settings
+try:
+    from deploy_settings import *  # NOQA
+    print 'Local Deployment Settings found...'
+except ImportError:
+    pass
+
+TOGILE_PATH = '/home/%s/togile' % TOGILE_USER[0]
+
+# Tuples of Usernames and Passwords
+# e.g USERS = (('user', 'userPass'),)
+USERS += (TOGILE_USER,)

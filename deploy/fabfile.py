@@ -1,7 +1,7 @@
 import os
 from time import sleep
 
-from fabric.api import task, cd, run, sudo
+from fabric.api import task, cd, sudo
 from fabric.context_managers import prefix
 from fabric.context_managers import settings
 
@@ -16,6 +16,8 @@ LOCAL_BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 # Repo Path on remote server!
 REPO_PATH = os.path.join(tg.TOGILE_PATH, 'togile')
 
+USER, PASSWORD = tg.TOGILE_USER
+
 
 @task
 def deploy():
@@ -26,15 +28,14 @@ def deploy():
 
     tg_user, tg_pass = tg.TOGILE_USER
 
-    with settings(user=tg_user, password=tg_pass):
-        _add_env(venv)
+    _add_env(venv)
 
-        with virtualenv(venv), prefix('export TOGILE_PRODUCTION=True'):
-            _install_requirements()
-            _adjust_app_settings(venv)
-            _prepare_db()
-            _prepare_static(venv)
-            _prepare_service(venv)
+    with virtualenv(venv), prefix('export TOGILE_PRODUCTION=True'):
+        _install_requirements()
+        _adjust_app_settings(venv)
+        _prepare_db()
+        _prepare_static(venv)
+        _prepare_service(venv)
 
 
 def _install_pkgs():
@@ -46,25 +47,25 @@ def _install_pkgs():
 def _add_users():
     for user in tg.USERS:
         username, password = user
-        require.user(username, password=password)
+        require.user(username, password=password, shell='/bin/bash')
         require.sudoer(username)
 
 
 def _add_env(venv):
     # Add TOGILE path
-    require.directory(tg.TOGILE_PATH)
+    require.directory(tg.TOGILE_PATH, owner=USER, use_sudo=True)
 
     # Add venv
-    require.python.virtualenv(venv)
+    require.python.virtualenv(venv, user=USER, use_sudo=True)
 
     # Pull/Update GIT Repo
     with cd(tg.TOGILE_PATH):
-        require.git.working_copy(tg.TOGILE_REPO)
+        require.git.working_copy(tg.TOGILE_REPO, user=USER, use_sudo=True)
 
 
 def _install_requirements():
     req_file = os.path.join(REPO_PATH, 'requirements.txt')
-    require.python.requirements(req_file)
+    require.python.requirements(req_file, user=USER, use_sudo=True)
 
 
 def _adjust_app_settings(venv):
@@ -77,21 +78,19 @@ def _adjust_app_settings(venv):
     remote_settings_path = os.path.join(REPO_PATH, 'togile', 'settings',
                                         'prod_settings.py')
 
-    require.files.file(remote_settings_path, source=local_settings_path)
+    require.files.file(remote_settings_path, source=local_settings_path,
+                       owner=USER, use_sudo=True)
     static_dir = os.path.join(venv, 'www')
     context = {
         'static': static_dir
     }
     files.upload_template(local_settings_path, remote_settings_path,
-                          context=context)
+                          context=context, user=USER, use_sudo=True)
 
 
 def _prepare_db():
     # Create DB and DB Users, from Production settings
     require.postgres.server()
-
-    db_user, db_pass = tg.DB_SUPERUSER
-    require.postgres.user(db_user, password=db_pass, superuser=True)
 
     for db in DATABASES.itervalues():
         require.postgres.user(db['USER'], password=db['PASSWORD'],
@@ -100,36 +99,42 @@ def _prepare_db():
 
     # Assuming Virtual Env activated!
     with cd(REPO_PATH):
-        run('python manage.py syncdb --noinput')
-        run('python manage.py migrate')
+        sudo('python manage.py syncdb --noinput', user=USER)
+        sudo('python manage.py migrate', user=USER)
         # Load fixtures
         fixtures_path = os.path.join(REPO_PATH, 'deploy', 'fixtures')
-        fixtures = run('ls %s' % fixtures_path).split()
+        fixtures = sudo('ls %s' % fixtures_path).split()
         for fixture in fixtures:
             if fixture.endswith('json'):
-                run('python manage.py loaddata deploy/fixtures/%s' % fixture)
+                sudo('python manage.py loaddata deploy/fixtures/%s' % fixture,
+                     user=USER)
 
 
 def _prepare_static(venv):
     static_dir = os.path.join(venv, 'www')
-    require.directory(static_dir)
+    require.directory(static_dir, owner=USER, use_sudo=True)
 
     with cd(REPO_PATH):
-        run('python manage.py collectstatic --noinput')
+        sudo('python manage.py collectstatic --noinput', user=USER)
 
         # Virual-Node and Angular App
-        require.python.package('virtual-node==0.0.4')
-        require.nodejs.package('bower')
+        require.python.package('virtual-node==0.0.4', user=USER, use_sudo=True)
+
+        # Kinda a hack! npm ignored sudo user and used another $HOME
+        # Forcing it to use certain $HOME
+        with prefix('export HOME=/home/%s' % USER):
+            sudo('echo $HOME', user=USER)
+            sudo('npm install bower -g', user=USER)
 
     app_path = os.path.join(REPO_PATH, 'frontend')
-    with cd(app_path):
-        run('bower install')
+    with cd(app_path), prefix('export HOME=/home/%s' % USER):
+        sudo('bower install', user=USER)
 
 
 def _prepare_service(venv):
     # logs
     log_dir = os.path.join(venv, 'log')
-    require.directory(log_dir)
+    require.directory(log_dir, owner=USER, use_sudo=True)
 
     # Nginx
     require.nginx.disabled('default')
@@ -141,11 +146,15 @@ def _prepare_service(venv):
     require.nginx.site(tg.NGINX['server_name'], template_source=conf,
                        nginx_log=nginx_log, static=static, togile_app=app)
 
+    # Ensure running ...
+    require.nginx.server()
+
     # CIRCUS
 
     # Upstart Conf
     circus_dir = os.path.join(venv, 'circus')
-    require.directory(circus_dir)
+    require.directory(circus_dir, owner=USER, use_sudo=True)
+
     context = {
         'venv': venv,
         'circus': circus_dir,
@@ -156,7 +165,8 @@ def _prepare_service(venv):
                           context=context, use_sudo=True)
     # Web INI
     web_ini = os.path.join(context['circus'], 'web.ini')
-    files.upload_template('circus/circus.ini', web_ini, context=context)
+    files.upload_template('circus/circus.ini', web_ini, context=context,
+                          user=USER, use_sudo=True)
 
     # Start Circus
     with settings(warn_only=True):
